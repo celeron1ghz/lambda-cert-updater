@@ -1,0 +1,40 @@
+service: lambda-cert-updater
+variablesResolutionMode: 20210326
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: go1.x
+  lambdaHashingVersion: 20201221
+  stage: dev
+  region: ap-northeast-1
+  deploymentBucket: serverless-upload-ap-northeast-1
+  versionFunctions: false
+
+#  iamRoleStatements:
+#    - Effect: "Allow"
+#      Action:
+#        - "s3:PutObject"
+#      Resource:
+#        Fn::Join:
+#          - ""
+#          - - "arn:aws:s3:::"
+#            - "Ref" : "ServerlessDeploymentBucket"
+#            - "/*"
+
+functions:
+  main:
+    handler: handler
+    description: cert updater
+    timeout: 300
+    memorySize: 1024
+#    events:
+#      - schedule: rate(10 minutes)
+
+resources:
+  Description: Fetch Let's Encrypt certificate
+  Resources:
+    NewResource:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: "${env:CERT_UPDATER_CERTIFICATE_BUCKET}"
