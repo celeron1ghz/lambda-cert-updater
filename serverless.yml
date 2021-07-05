@@ -14,14 +14,19 @@ provider:
     role:
       statements:
         - Effect:   "Allow"
-          Action:   ["s3:GetObject", "s3:PutObject"]
           Resource: { Fn::Join: ["", ["arn:aws:s3:::", { "Ref" : "CertificateBucket" }, "/*"]] }
+          Action:   ["s3:GetObject", "s3:PutObject"]
         - Effect:   Allow
-          Action:   ["route53:ListHostedZones", "route53:GetChange"]
           Resource: "*"
+          Action:
+            - "route53:ListHostedZones"
+            - "route53:GetChange"
+            - "route53:ListHostedZonesByName"
+            - "route53:ListResourceRecordSets"
         - Effect:   Allow
-          Action:   ["route53:ChangeResourceRecordSets"]
           Resource: "*"
+          Action:
+            - "route53:ChangeResourceRecordSets"
 
 functions:
   main:

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"crypto/x509"
 	"encoding/pem"
 	"errors"
@@ -10,9 +11,11 @@ import (
 	"os"
 	"strings"
 	"time"
+
+	"github.com/aws/aws-lambda-go/lambda"
 )
 
-func main() {
+func handler(ctx context.Context, name interface{}) (interface{}, error) {
 	mailAddress := os.Getenv("CERT_UPDATER_MAIL_ADDRESS")
 	obtainDomains := strings.Split(os.Getenv("CERT_UPDATER_OBTAIN_DOMAINS"), ",")
 	certificateStoreBucket := os.Getenv("CERT_UPDATER_CERTIFICATE_BUCKET")
@@ -59,6 +62,8 @@ func main() {
 			log.Fatal("store certificate failed: ", err)
 		}
 	}
+
+	return "OK", nil
 }
 
 func GetCertificateRemainDay(certReader io.Reader) (int, error) {
@@ -83,4 +88,8 @@ func GetCertificateRemainDay(certReader io.Reader) (int, error) {
 	remain := time.Until(cert.NotAfter)
 	remainDays := int(remain.Hours() / 24)
 	return remainDays, nil
+}
+
+func main() {
+	lambda.Start(handler)
 }
