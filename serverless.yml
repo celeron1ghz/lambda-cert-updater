@@ -28,6 +28,10 @@ functions:
     description: cert updater
     timeout: 300
     memorySize: 1024
+    environment:
+      CERT_UPDATER_MAIL_ADDRESS: "${env:CERT_UPDATER_MAIL_ADDRESS}"
+      CERT_UPDATER_OBTAIN_DOMAINS: "${env:CERT_UPDATER_OBTAIN_DOMAINS}"
+      CERT_UPDATER_CERTIFICATE_BUCKET: "${env:CERT_UPDATER_CERTIFICATE_BUCKET}"
 #    events:
 #      - schedule: rate(10 minutes)
 
