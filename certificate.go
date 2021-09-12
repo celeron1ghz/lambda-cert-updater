@@ -46,7 +46,7 @@ func (c *Certificate) ObtainCertificate(mailAddress string, obtainDomains []stri
 	}
 
 	config := lego.NewConfig(&User{Email: mailAddress, key: privateKey})
-	config.CADirURL = "https://acme-staging-v02.api.letsencrypt.org/directory"
+	//config.CADirURL = "https://acme-staging-v02.api.letsencrypt.org/directory"
 	config.Certificate.KeyType = certcrypto.EC384
 
 	client, err := lego.NewClient(config)
